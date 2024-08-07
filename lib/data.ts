@@ -1,0 +1,83 @@
+export const statesData = [
+    "Andhra Pradesh",
+    "Arunachal Pradesh",
+    "Assam",
+    "Bihar",
+    "Chhattisgarh",
+    "Goa",
+    "Gujarat",
+    "Haryana",
+    "Himachal Pradesh",
+    "Jharkhand",
+    "Karnataka",
+    "Kerala",
+    "Madhya Pradesh",
+    "Maharashtra",
+    "Manipur",
+    "Meghalaya",
+    "Mizoram",
+    "Nagaland",
+    "Odisha",
+    "Punjab",
+    "Rajasthan",
+    "Sikkim",
+    "Tamil Nadu",
+    "Telangana",
+    "Tripura",
+    "Uttar Pradesh",
+    "Uttarakhand",
+    "West Bengal"
+];
+
+export const departmentData = [
+    "CSE",
+    "ECE",
+    "EEE",
+    "ICE",
+    "Mechanical",
+    "Chemical",
+    "Civil",
+    "Production",
+    "Metallurgy",
+    "Architecture"
+];
+
+export const interestData = [
+    "Living Life",
+    "Academics",
+    "Coding",
+    "Sports"
+];
+
+export const charecterData = [
+    "Overachiever",
+    "Party Animal",
+    "Slacker",
+    "Nerd",
+    "Athlete",
+    "Artist",
+    "Activist",
+    "Social Butterfly",
+    "Techie",
+    "International Student",
+    "Hipster",
+    "Researcher",
+    "Entrepreneur",
+    "Quiet One",
+    "Class Clown",
+    "Leader",
+    "Environmentalist",
+    "Foodie",
+    "Fashionista",
+    "Musician",
+    "Fitness Freak",
+    "Gamer",
+    "Study Group Organizer",
+    "Commuter",
+    "Non-Traditional Student",
+    "Fraternity/Sorority Member",
+    "Bookworm",
+    "Exchange Student",
+    "Mentor",
+    "Workaholic"
+];  
