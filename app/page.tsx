@@ -3,8 +3,8 @@ import Link from "next/link";
 
 export default function Home() {
     return (
-        <main className="p-4 flex items-center justify-center flex-col">
-            <h1 className="text-4xl inter font-black"> Confused about your Roomie? Find &apos;em here! </h1>
+        <main className="p-4 pt-12 flex items-center justify-center flex-col">
+            <h1 className="text-3xl sm:text-4xl inter font-black"> Confused about your Roomie? Find &apos;em here! </h1>
 
             <Link href="/register" className="mt-4 btn btn-primary">
                 Introduce Yourself
@@ -16,7 +16,8 @@ export default function Home() {
                 </span>
 
                 <span className="block mt-4">
-                    FindMyRoomie connects people who are seeking roommate, across your batch. Browse through profiles, listing interests to living habits. Find your match, connect effortlessly through our platform and get going now! Happy First Year!
+                    <span className="hidden sm:inline">FindMyRoomie connects people who are seeking roommate, across your batch. Browse through profiles, listing interests to living habits.</span>
+                    Find your match, connect effortlessly through our platform and get going now! Happy First Year!
                 </span>
             </p>
 

@@ -22,6 +22,7 @@ export default function RootLayout({
             <head>
                 <title> FindMyRoomie </title>
                 <meta name="description" content="FindMyRoomie connects people who are seeking roommate, across your batch. Browse through profiles, listing interests to living habits. Find your match, connect effortlessly through our platform and get going now! Happy First Year!" />
+                <link rel="icon" type="image/x-icon" href="/favicon.ico"></link>
             </head>
 
             <body>

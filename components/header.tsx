@@ -3,9 +3,11 @@ import { FaDoorOpen } from "react-icons/fa6";
 import { useContext, useEffect } from "react";
 import { ProfileContext } from "../lib/profileContext";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
     let profile = useContext(ProfileContext);
+    let pathname = usePathname();
     
     return (
         <header className="px-2 py-1 flex items-center justify-between">
@@ -20,22 +22,22 @@ export default function Header() {
             </Link>
 
             <nav className="flex gap-2">
-                <Link className="btn btn-sm btn-ghost" href="/about">
+                <Link className={`btn btn-sm ${pathname === "/about" && "border-2 border-gray-300"}`} href="/about">
                     About
                 </Link>
 
                 {
                     profile ? (
                         <div className="flex flex-row gap-2">
-                            <Link className="btn btn-sm btn-ghost" href="/profile">
+                            <Link className={`btn btn-sm ${pathname === "/profile" && "border-2 border-gray-300"}`} href="/profile">
                                 Profile
                             </Link>
-                            <Link className="btn btn-sm btn-ghost" href="/dashboard">
+                            <Link className={`btn btn-sm ${pathname === "/dashboard" && "border-2 border-gray-300"}`} href="/dashboard">
                                 Dashboard
                             </Link>
                         </div>
                     ) : (
-                        <Link className="btn btn-sm btn-primary" href="/register">
+                        <Link className={`btn btn-sm btn-primary`} href="/register">
                             Register
                         </Link>
                     )
