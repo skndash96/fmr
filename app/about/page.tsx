@@ -20,7 +20,7 @@ export default function About() {
                 Our Mission
             </h1>
             <p className="mt-2">
-                Our mission is simple: to provide a reliable and user-friendly platform that helps students connect with potential roommates. We understand how crucial it is to find someone who matches your lifestyle and preferences, which is why we've developed a comprehensive questionnaire to ensure you find the best possible match.
+                Our mission is simple: to provide a reliable and user-friendly platform that helps students connect with potential roommates. We understand how crucial it is to find someone who matches your lifestyle and preferences, which is why we&apos;ve developed a comprehensive questionnaire to ensure you find the best possible match.
             </p>
             <h1 className="text-lg font-bold mt-4">
                 How It Works

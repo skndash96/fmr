@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Home() {
     return (
         <main className="p-4 flex items-center justify-center flex-col">
-            <h1 className="text-4xl inter font-black"> Confused about your Roomie? Find 'em here! </h1>
+            <h1 className="text-4xl inter font-black"> Confused about your Roomie? Find &apos;em here! </h1>
 
             <Link href="/register" className="mt-4 btn btn-primary">
                 Introduce Yourself
