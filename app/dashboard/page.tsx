@@ -6,6 +6,10 @@ import { Profile } from "../../db/schema";
 import supabase from "../../db/supabase";
 import ProfileCard from "../../components/profileCard";
 import Filters from "../../components/filters";
+import Link from "next/link";
+import { MdQuestionAnswer } from "react-icons/md";
+
+const searchCols = ["name", "bio", "language", "personality"];
 
 export default function Dashboard() {
     let profile = useContext(ProfileContext);
@@ -31,12 +35,12 @@ export default function Dashboard() {
             let q = `and(gender.eq.${profile.gender}`;
 
             if (department) q += `,department.eq.${department}`;
-            
+
             if (words.length > 0) {
                 q += ",or(";
 
                 q += words.map(
-                    w => ["name", "bio", "language", "personality"].map(c => (
+                    w => searchCols.map(c => (
                         `${c}.ilike.%${w}%`
                     ))
                 ).flat().join(",");
@@ -103,6 +107,16 @@ export default function Dashboard() {
 
     return (
         <main className="p-4 w-full max-w-lg mx-auto relative min-h-[150vh]">
+            {!profile?.personality && (
+                <div className="">
+                    <span>New user?</span><br/>
+                    <Link href="/questionnaire" className="mb-4 btn btn-sm items-center gap-2">
+                        <MdQuestionAnswer size={22} />
+                        Answer Questionnaire
+                    </Link>
+                </div>
+            )}
+
             <Filters
                 words={words}
                 setWords={setWords}

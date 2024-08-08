@@ -4,6 +4,7 @@ import TagsInput from "./tagsSelect";
 import { z, ZodError } from "zod";
 import { ProfileContext } from "../lib/profileContext";
 import supabase from "../db/supabase";
+import { MdQuestionAnswer } from "react-icons/md";
 
 const questionnaireSchema = z.object({
     department: z.string().trim().min(1, { message: "Please select Department" }),
@@ -21,7 +22,7 @@ export default function Questionnaire() {
     const [state, setState] = useState<string>(profile.state);
     const [language, setLanguage] = useState<string>(profile.language);
     const [bio, setBio] = useState<string>(profile.bio);
-    const [personality, setPersonality] = useState<string[]>(profile.personality.split(", "));
+    const [personality, setPersonality] = useState<string[]>(profile.personality?.split(", ") || []);
     const [interest, setInterest] = useState<string>(profile.interest);
 
     const [error, setError] = useState<string|null>(null);
@@ -61,7 +62,10 @@ export default function Questionnaire() {
 
     return (
         <form onSubmit={handleSubmit} className="p-4 w-full flex flex-col gap-4">
-            <h1 className="font-bold text-2xl text-center"> Questionnaire </h1>
+            <h1 className="font-bold text-2xl text-center flex items-center gap-2 justify-center">
+                <MdQuestionAnswer />
+                Questionnaire
+            </h1>
 
             <div className="flex flex-col sm:flex-row gap-4">
                 <fieldset className="form-control">

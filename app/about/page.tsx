@@ -51,7 +51,7 @@ export default function About() {
                     </div>
                 </div>
 
-                <div className="mt-8">
+                <div className="mt-8" id="contact">
                     <h1 className="font-black text-xl"> Meet me </h1>
 
                     <ul className="mt-4 flex gap-4 text-gray-600 text-2xl">

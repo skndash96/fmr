@@ -12,7 +12,7 @@ const loginSchema = z.object({
     password: z.string().min(1, { message: "Invalid credentials" })
 });
 
-export default function Register() {
+export default function Login() {
     const profile = useContext(ProfileContext);
 
     useEffect(() => {
@@ -26,7 +26,7 @@ export default function Register() {
     const [success, setSuccess] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const handleSubmit : FormEventHandler = async e => {
+    const handleSubmit: FormEventHandler = async e => {
         e.preventDefault();
 
         try {
@@ -47,6 +47,7 @@ export default function Register() {
             if (error) throw error;
 
             setSuccess(true);
+            setTimeout(() => redirect("/dashboard"), 2000);
         } catch (e) {
             if (e instanceof ZodError) {
                 setError(e.errors[0].message);
@@ -60,7 +61,7 @@ export default function Register() {
             setLoading(false);
         }
     };
-    
+
     return (
         <main className="p-4">
             <form onSubmit={handleSubmit} className="p-4 max-w-lg mx-auto flex flex-col gap-2 rounded-xl drop-shadow-lg bg-base-200 border-2 border-solid border-black border-opacity-20">
@@ -108,10 +109,18 @@ export default function Register() {
                     {loading && <div className="loading loading-spinner" />}
                     Login
                 </button>
-                
+
                 <Link href="/register" className="mt-2 underline text-sm">
                     Not registered yet?
                 </Link>
+
+                <details className="collapse collapse-arrow text-sm -mt-4">
+                    <summary className="pl-0 collapse-title underline w-fit">Forgot Password?</summary>
+                    
+                    <div className="collapse-content p-0">
+                        <Link href="/about#contact" className="underline">Contact me</Link> to reset password.
+                    </div>
+                </details>
             </form>
         </main>
     );

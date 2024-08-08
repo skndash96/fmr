@@ -3,7 +3,7 @@
 import { z, ZodError } from "zod";
 import { genderEnum, InsertProfile } from "../../db/schema";
 import { isMobilePhone } from "validator";
-import { FormEventHandler, useContext, useEffect, useState } from "react";
+import { FormEventHandler, useContext, useEffect, useRef, useState } from "react";
 import supabase from "../../db/supabase";
 import { AuthApiError } from "@supabase/supabase-js";
 import Link from "next/link";
@@ -30,6 +30,7 @@ const registerSchema = z.object({
 
 export default function Register() {
     const profile = useContext(ProfileContext);
+    const confirmDialog = useRef<HTMLDialogElement>();
 
     useEffect(() => {
         if (profile) redirect("/dashboard");
@@ -45,9 +46,28 @@ export default function Register() {
     const [success, setSuccess] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const handleSubmit : FormEventHandler = async (e) => {
-        e.preventDefault();
+    const openDialog = async () => {
+        if (!confirmDialog.current) throw("No dialog Ref found");
+
+        confirmDialog.current.showModal();
+
+        let confirm = await new Promise(resolve => {
+            let actions = confirmDialog.current.querySelectorAll("button");
+            let cancel = actions[0];
+            let confirm = actions[1];
         
+            cancel.addEventListener("click", () => resolve(false));
+            confirm.addEventListener("click", () => resolve(true));
+        });
+
+        confirmDialog.current.close();
+
+        return confirm;
+    };
+
+    const handleSubmit: FormEventHandler = async (e) => {
+        e.preventDefault();
+
         try {
             setLoading(true);
             setError(null);
@@ -57,13 +77,16 @@ export default function Register() {
                 name, email, password, ph, gender
             });
 
+            let confirm = await openDialog();
+            if (!confirm) return;
+
             let { data: { user }, error } = await supabase.auth.signUp({
                 email: valid.email,
                 password: valid.password
             });
             if (error || !user) throw error;
 
-            let record : InsertProfile = {
+            let record: InsertProfile = {
                 id: user.id,
                 name: valid.name,
                 gender: valid.gender,
@@ -75,6 +98,7 @@ export default function Register() {
             if (insertError) throw insertError;
 
             setSuccess(true);
+            setTimeout(() => redirect("/dashboard"), 2000);
         } catch (e) {
             if (e instanceof ZodError) {
                 setError(e.errors[0].message);
@@ -175,6 +199,20 @@ export default function Register() {
                         </span>
                     ) : null}
                 </div>
+
+                <dialog ref={confirmDialog} className="modal">
+                    <div className="modal-box">
+                        <p>
+                            <span className="block mb-2 font-semibold">Please make note of the password before registering.</span>
+                            You cannot reset password if forgotten because SMTP/SMS servers are not affordable by me.
+                        </p>
+
+                        <div className="mt-2 w-fit ml-auto flex gap-2">
+                            <button type="button" className="btn"> Change Password </button>
+                            <button type="button" className="btn btn-primary"> Confirm </button>
+                        </div>
+                    </div>
+                </dialog>
 
                 <button disabled={loading} type="submit" className="btn btn-primary flex items-center gap-2">
                     {loading && <div className="loading loading-spinner" />}
