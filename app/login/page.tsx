@@ -16,7 +16,10 @@ export default function Login() {
     const profile = useContext(ProfileContext);
 
     useEffect(() => {
-        if (profile) redirect("/dashboard");
+        if (!profile) return;
+    
+        if (profile.bio) redirect("/dashboard");
+        else redirect("/questionnaire"); 
     }, [profile]);
 
     const [email, setEmail] = useState<string>("");

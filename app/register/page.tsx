@@ -33,7 +33,7 @@ export default function Register() {
     const confirmDialog = useRef<HTMLDialogElement>();
 
     useEffect(() => {
-        if (profile) redirect("/dashboard");
+        if (profile) redirect("/questionnaire");
     }, [profile]);
 
     const [name, setName] = useState<string>("");
