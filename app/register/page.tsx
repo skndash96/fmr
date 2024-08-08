@@ -46,7 +46,7 @@ export default function Register() {
     const [success, setSuccess] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const openDialog = async () => {
+    const openConfirmDialog = async () => {
         if (!confirmDialog.current) throw("No dialog Ref found");
 
         confirmDialog.current.showModal();
@@ -77,7 +77,7 @@ export default function Register() {
                 name, email, password, ph, gender
             });
 
-            let confirm = await openDialog();
+            let confirm = await openConfirmDialog();
             if (!confirm) return;
 
             let { data: { user }, error } = await supabase.auth.signUp({
@@ -208,8 +208,8 @@ export default function Register() {
                         </p>
 
                         <div className="mt-2 w-fit ml-auto flex gap-2">
-                            <button type="button" className="btn"> Change Password </button>
-                            <button type="button" className="btn btn-primary"> Confirm </button>
+                            <button tabIndex={-1} type="button" className="btn"> Change Password </button>
+                            <button tabIndex={-1} type="button" className="btn btn-primary"> Confirm </button>
                         </div>
                     </div>
                 </dialog>

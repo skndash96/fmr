@@ -110,17 +110,19 @@ export default function Login() {
                     Login
                 </button>
 
-                <Link href="/register" className="mt-2 underline text-sm">
-                    Not registered yet?
-                </Link>
+                <div className="mt-2 flex flex-col gap-2">
+                    <Link href="/register" className="underline text-sm">
+                        Not registered yet?
+                    </Link>
 
-                <details className="collapse collapse-arrow text-sm -mt-4">
-                    <summary className="pl-0 collapse-title underline w-fit">Forgot Password?</summary>
-                    
-                    <div className="collapse-content p-0">
-                        <Link href="/about#contact" className="underline">Contact me</Link> to reset password.
-                    </div>
-                </details>
+                    <details className="text-sm">
+                        <summary className="">Forgot Password?</summary>
+
+                        <div className="">
+                            <Link href="/about#contact" className="underline">Contact me</Link> to reset password.
+                        </div>
+                    </details>
+                </div>
             </form>
         </main>
     );
