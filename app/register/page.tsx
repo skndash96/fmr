@@ -98,7 +98,9 @@ export default function Register() {
             if (insertError) throw insertError;
 
             setSuccess(true);
-            setTimeout(() => redirect("/dashboard"), 2000);
+            setTimeout(() => {
+                redirect("/questionnaire");
+            }, 1000);
         } catch (e) {
             if (e instanceof ZodError) {
                 setError(e.errors[0].message);
