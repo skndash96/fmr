@@ -1,4 +1,4 @@
-import { FormEventHandler, useContext, useState } from "react";
+import { FormEventHandler, useContext, useEffect, useState } from "react";
 import { charecterData, departmentData, interestData, statesData } from "../lib/data";
 import TagsInput from "./tagsSelect";
 import { z, ZodError } from "zod";
@@ -9,34 +9,45 @@ import { MdQuestionAnswer } from "react-icons/md";
 const questionnaireSchema = z.object({
     department: z.string().trim().min(1, { message: "Please select Department" }),
     state: z.string().trim().min(1, { message: "Please select State" }),
-    language: z.string().trim().min(1, { message: "Please fill Languages" }),
-    personality: z.string().trim().min(1, { message: "Please select Personlaties" }),
+    language: z.string().trim().min(1, { message: "Please input Languages" }),
+    personality: z.string().trim().min(1, { message: "Please input Personlaties" }),
     interest: z.string().trim().min(1, { message: "Please select Interests" }),
-    bio: z.string().trim().min(10, { message: "Bio must be atleast 10 charecters long"}),
+    bio: z.string().trim().min(10, { message: "Bio must be atleast 10 charecters long" }),
 });
 
 export default function Questionnaire() {
     const profile = useContext(ProfileContext);
 
-    const [department, setDepartment] = useState<string>(profile.department);
-    const [state, setState] = useState<string>(profile.state);
-    const [language, setLanguage] = useState<string>(profile.language);
-    const [bio, setBio] = useState<string>(profile.bio);
-    const [personality, setPersonality] = useState<string[]>(profile.personality?.split(", ") || []);
-    const [interest, setInterest] = useState<string>(profile.interest);
+    const [department, setDepartment] = useState<string>("");
+    const [state, setState] = useState<string>("");
+    const [language, setLanguage] = useState<string>("");
+    const [bio, setBio] = useState<string>("");
+    const [personality, setPersonality] = useState<string[]>([]);
+    const [interest, setInterest] = useState<string>("");
 
-    const [error, setError] = useState<string|null>(null);
+    const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean>(false);
 
-    const handleSubmit : FormEventHandler = async e => {
-        e.preventDefault();
+    useEffect(() => {
+        setDepartment(profile?.department || "");
+        setState(profile?.state || "");
+        
+        setLanguage(profile?.language || "");
+        setBio(profile?.bio || "");
+        setPersonality(profile?.personality?.split(", ") || []);
+        setInterest(profile?.interest || "");
+    }, [profile]);
 
-        try  {
+    const handleSubmit: FormEventHandler = async e => {
+        e.preventDefault();
+        if (!profile) return;
+
+        try {
             setLoading(true);
             setError(null);
             setSuccess(false);
-            
+
             let valid = await questionnaireSchema.parseAsync({
                 department, state, language, bio, personality: personality.join(", "), interest
             });
@@ -46,7 +57,7 @@ export default function Questionnaire() {
             let { error } = await supabase.from("profiles").update(valid).eq("id", profile.id);
 
             if (error) throw error;
-            
+
             setSuccess(true);
         } catch (e) {
             if (e instanceof ZodError) {
@@ -111,6 +122,10 @@ export default function Questionnaire() {
                 </label>
 
                 <select value={interest} onChange={e => setInterest(e.currentTarget.value)} className="select select-bordered">
+                    <option>
+                        Select Interest
+                    </option>
+
                     {interestData.map(item => (
                         <option key={item} value={item}>
                             {item}

@@ -20,9 +20,10 @@ const registerSchema = z.object({
     email: z
         .string()
         .email({ message: "Invalid Email" }),
-    ph: z
-        .string()
-        .refine(isMobilePhone, { message: "Invalid Phone number" }),
+    ph: z.preprocess(val => String(val).trim() || undefined, z.optional(
+            z.string()
+            .refine(isMobilePhone, { message: "Invalid phone number" })
+        )),
     password: z
         .string()
         .min(6, { message: "Password must be atleast 6 charecters long" })
@@ -30,7 +31,7 @@ const registerSchema = z.object({
 
 export default function Register() {
     const profile = useContext(ProfileContext);
-    const confirmDialog = useRef<HTMLDialogElement>();
+    const confirmDialog = useRef<HTMLDialogElement>(null);
 
     useEffect(() => {
         if (profile) redirect("/questionnaire");
@@ -52,12 +53,15 @@ export default function Register() {
         confirmDialog.current.showModal();
 
         let confirm = await new Promise(resolve => {
-            let actions = confirmDialog.current.querySelectorAll("button");
+            let actions = confirmDialog.current?.querySelectorAll("button");
+            if (!actions) return;
+
             let cancel = actions[0];
             let confirm = actions[1];
         
             cancel.addEventListener("click", () => resolve(false));
             confirm.addEventListener("click", () => resolve(true));
+            confirmDialog.current?.addEventListener("close", () => resolve(false));
         });
 
         confirmDialog.current.close();
@@ -91,7 +95,7 @@ export default function Register() {
                 name: valid.name,
                 gender: valid.gender,
                 email: valid.email,
-                ph: valid.ph
+                ph: valid.ph 
             };
 
             let { error: insertError } = await supabase.from("profiles").insert(record);
@@ -163,10 +167,9 @@ export default function Register() {
                     />
                 </fieldset>
 
-
                 <fieldset className="form-control">
                     <label className="label label-text">
-                        Phone*
+                        Phone
                     </label>
 
                     <input

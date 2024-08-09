@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm';
 import { integer, pgEnum, pgSchema, pgTable, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 const authTable = pgSchema("auth").table("users", {
@@ -11,14 +12,13 @@ export const profiles = pgTable("profiles", {
     name: text("name").notNull(),
     gender: genderEnum("gender").notNull(),
     email: text("email").notNull(),
-    ph: text("ph").notNull(),
-
-    department: text('department'),
-    language: text('language'),
-    state: text('state'),
-    bio: text('bio'),
-    interest: text('interest'),
-    personality: text('personality')
+    ph: text("ph").default(sql`null`),
+    department: text('department').default(sql`null`),
+    language: text('language').default(sql`null`),
+    state: text('state').default(sql`null`),
+    bio: text('bio').default(sql`null`),
+    interest: text('interest').default(sql`null`),
+    personality: text('personality').default(sql`null`)
 });
 
 export type Profile = typeof profiles.$inferSelect;

@@ -1,4 +1,4 @@
-import { KeyboardEventHandler, useState } from "react";
+import { KeyboardEventHandler } from "react";
 
 export default function TagsInput({
     label, placeholder, values, setValues
@@ -8,22 +8,28 @@ export default function TagsInput({
     values: string[],
     setValues: (values: string[]) => void
 }) {
-    const [query, setQuery] = useState<string>("");
-
     const handleAdd = (item: string) => {
-        setValues([...values, item]);
+        let s = new Set(values);
+        s.add(item);
+        setValues(Array.from(s));
     };
-    const handleRemove = (item: string) => {
-        let idx = values.indexOf(item);
-        if (idx !== -1) values.splice(idx, 1);
 
-        setValues([...values]);
+    const handleRemove = (item: string) => {
+        let s = new Set(values);
+        s.delete(item);
+        setValues(Array.from(s));
     };
 
     const handleKeyDown : KeyboardEventHandler<HTMLInputElement> = e => {
         if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            handleAdd(e.currentTarget.value);
+            
+            let v = e.currentTarget.value.trim();
+            
+            if (v && v.length > 0) {
+                handleAdd(v);
+            }
+
             e.currentTarget.value = "";
         }
     };
@@ -45,7 +51,6 @@ export default function TagsInput({
 
             <input
                 onKeyDown={handleKeyDown}
-                onChange={e => setQuery(e.currentTarget.value)}
                 placeholder={placeholder}
                 className="w-full input input-bordered"
             />

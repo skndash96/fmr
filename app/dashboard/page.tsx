@@ -15,7 +15,7 @@ export default function Dashboard() {
     let profile = useContext(ProfileContext);
     const [data, setData] = useState<Profile[]>([]);
 
-    const [department, setDepartment] = useState<string>();
+    const [department, setDepartment] = useState<string>("");
     const [words, setWords] = useState<string[]>([]);
 
     const [loading, setLoading] = useState<boolean>(true);
@@ -54,20 +54,19 @@ export default function Dashboard() {
                 .from("profiles")
                 .select()
                 .or(q)
-                .range(offset.current, step + offset.current);
+                .range(offset.current, step + offset.current)
+                .returns<Profile[]>();
 
             console.log("fetch", offset.current, step + offset.current, reset);
 
-            if (error) throw error;
+            if (error || !_data) throw error;
+
+            await new Promise(r => setTimeout(r, 1000));
 
             if (reset) {
                 setData([..._data]);
             } else {
                 setData(data => [...data, ..._data]);
-            }
-
-            if (_data.length === 0) {
-                setError("No records found");
             }
         } catch (e) {
             console.error(e);
@@ -107,7 +106,7 @@ export default function Dashboard() {
 
     return (
         <main className="p-4 w-full max-w-lg mx-auto relative min-h-[150vh]">
-            {!profile?.personality && (
+            {profile && !profile.personality && (
                 <div className="">
                     <span>New user?</span><br/>
                     <Link href="/questionnaire" className="mb-4 btn btn-sm items-center gap-2">
@@ -131,9 +130,7 @@ export default function Dashboard() {
                     </li>
                 ))}
 
-                {loading && (
-                    <div className="mt-4 loading loading-spinner" />
-                )}
+                <div className={`w-full h-40 ${loading && "skeleton bg-base-200 shadow-lg"}`} />
 
                 {error && (
                     <span className="mt-4 text-red-500">
@@ -142,7 +139,7 @@ export default function Dashboard() {
                 )}
             </ul>
 
-            <div id="end" className="h-16 absolute inset-0 top-auto"></div>
+            <div id="end" className="h-40 absolute inset-0 top-auto"></div>
         </main>
     );
 }
