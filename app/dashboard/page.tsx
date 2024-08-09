@@ -85,6 +85,7 @@ export default function Dashboard() {
         if (profile === null) redirect("/");
 
         observer.current?.disconnect();
+        offset.current = 0;
         getData(true);
 
         const endEl = document.getElementById("end");
