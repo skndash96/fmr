@@ -18,6 +18,7 @@ export default function Header() {
                         <span className="text-sm">Find My</span>
                         <span className="-mt-2 text-xl">Roomie</span>
                     </span>
+                    <span className="block scale-y-[1.6] font-bold text-primary opacity-60">2024</span>
                 </h1>
             </Link>
 
