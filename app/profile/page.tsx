@@ -52,6 +52,9 @@ export default function ProfilePage() {
                             <FaPen />
                             Update
                         </Link>
+                        <button className="btn">
+                            Account
+                        </button>
                         <button
                             disabled={loading}
                             onClick={handleSignout}

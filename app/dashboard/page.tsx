@@ -29,6 +29,8 @@ export default function Dashboard() {
         setLoading(true);
         setError(null);
 
+        if (reset) setData([]);
+        
         if (!profile) return;
 
         try {
