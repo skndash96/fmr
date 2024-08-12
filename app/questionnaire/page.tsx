@@ -1,14 +1,15 @@
 "use client";
 import { useContext, useEffect } from "react";
 import Questionnaire from "../../components/questionnaire";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ProfileContext } from "../../lib/profileContext";
 
 export default function QuestionnairePage() {
     let profile = useContext(ProfileContext);
+    const router = useRouter();
 
     useEffect(() => {        
-        if (profile === null) redirect("/");
+        if (profile === null) router.push("/");
     }, [profile]);
 
     return (

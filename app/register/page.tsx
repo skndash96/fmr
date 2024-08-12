@@ -8,7 +8,7 @@ import supabase from "../../db/supabase";
 import { AuthApiError } from "@supabase/supabase-js";
 import Link from "next/link";
 import { ProfileContext } from "../../lib/profileContext";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const registerSchema = z.object({
     name: z
@@ -32,9 +32,10 @@ const registerSchema = z.object({
 export default function Register() {
     const profile = useContext(ProfileContext);
     const confirmDialog = useRef<HTMLDialogElement>(null);
+    const router = useRouter();
 
     useEffect(() => {
-        if (profile) redirect("/questionnaire");
+        if (profile) router.push("/questionnaire");
     }, [profile]);
 
     const [name, setName] = useState<string>("");
@@ -102,9 +103,7 @@ export default function Register() {
             if (insertError) throw insertError;
 
             setSuccess(true);
-            setTimeout(() => {
-                redirect("/questionnaire");
-            }, 1000);
+            setTimeout(() => router.push("/questionnaire"), 1000);
         } catch (e) {
             if (e instanceof ZodError) {
                 setError(e.errors[0].message);
@@ -196,7 +195,7 @@ export default function Register() {
                 <div className="mt-4">
                     {success ? (
                         <span className="flex items-center gap-2 text-green-500">
-                            <div className="loading loading-spinner" /> Success! Redirecting...
+                            <div className="loading loading-spinner" /> Success! router.pushing...
                         </span>
                     ) : error ? (
                         <span className="text-red-500">

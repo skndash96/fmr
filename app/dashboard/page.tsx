@@ -1,6 +1,6 @@
 "use client";
 import { useContext, useEffect, useRef, useState } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ProfileContext } from "../../lib/profileContext";
 import { Profile } from "../../db/schema";
 import supabase from "../../db/supabase";
@@ -13,6 +13,7 @@ const searchCols = ["name", "bio", "language", "personality"];
 
 export default function Dashboard() {
     let profile = useContext(ProfileContext);
+    const router = useRouter();
     const [data, setData] = useState<Profile[]>([]);
 
     const [department, setDepartment] = useState<string>("");
@@ -84,7 +85,7 @@ export default function Dashboard() {
     }, [department, words]);
 
     useEffect(() => {
-        if (profile === null) redirect("/");
+        if (profile === null) router.push("/");
 
         observer.current?.disconnect();
         offset.current = 0;

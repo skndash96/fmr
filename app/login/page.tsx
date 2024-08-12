@@ -5,7 +5,7 @@ import supabase from "../../db/supabase";
 import { AuthApiError } from "@supabase/supabase-js";
 import Link from "next/link";
 import { ProfileContext } from "../../lib/profileContext";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const loginSchema = z.object({
     email: z.string().email({ message: "Invalid credentials" }),
@@ -14,12 +14,13 @@ const loginSchema = z.object({
 
 export default function Login() {
     const profile = useContext(ProfileContext);
+    const router = useRouter();
 
     useEffect(() => {
         if (!profile) return;
     
-        if (profile.bio) redirect("/dashboard");
-        else redirect("/questionnaire"); 
+        if (profile.bio) router.push("/dashboard");
+        else router.push("/questionnaire"); 
     }, [profile]);
 
     const [email, setEmail] = useState<string>("");
@@ -50,7 +51,7 @@ export default function Login() {
             if (error) throw error;
 
             setSuccess(true);
-            setTimeout(() => redirect("/dashboard"), 2000);
+            setTimeout(() => router.push("/dashboard"), 1000);
         } catch (e) {
             if (e instanceof ZodError) {
                 setError(e.errors[0].message);
@@ -99,7 +100,7 @@ export default function Login() {
                 <div className="mt-4">
                     {success ? (
                         <span className="flex items-center gap-2 text-green-500">
-                            <div className="loading loading-spinner" /> Success! Redirecting...
+                            <div className="loading loading-spinner" /> Success! redirecting...
                         </span>
                     ) : error ? (
                         <span className="text-red-500">

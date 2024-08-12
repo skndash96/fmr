@@ -1,5 +1,5 @@
 "use client";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import supabase from "../../db/supabase";
 import { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../../lib/profileContext";
@@ -10,9 +10,10 @@ import { FaSignOutAlt } from "react-icons/fa";
 export default function ProfilePage() {
     const profile = useContext(ProfileContext);
     const [loading, setLoading] = useState<boolean>(false);
+    const router = useRouter();
 
     useEffect(() => {
-        if (profile === null) redirect("/");
+        if (profile === null) router.push("/");
     }, [profile]);
 
     const handleSignout = async () => {
